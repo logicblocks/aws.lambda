@@ -11,4 +11,3 @@
 (defn camel-case-string? [value]
   (and (string? value)
     (re-matches #"[a-z]+((\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?" value)))
-

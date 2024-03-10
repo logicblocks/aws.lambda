@@ -28,6 +28,8 @@
 
    [camel-snake-kebab "0.4.3"]
 
+   [tick "0.7.5"]
+
    [com.amazonaws/aws-lambda-java-core "1.2.3"]
    [com.amazonaws/aws-lambda-java-runtime-interface-client "2.4.1"]]
 
@@ -50,11 +52,15 @@
      [eftest "0.6.0"]]}
 
    :dev
-   [:shared {:source-paths ["dev"]
+   [:shared {:aot          [aws.lambda.adapters.handlers-test
+                            aws.lambda.adapters.api-gateway.handlers-test]
+             :source-paths ["dev"]
              :eftest       {:multithread? false}}]
 
    :test
-   [:shared {:eftest {:multithread? false}}]
+   [:shared {:aot    [aws.lambda.adapters.handlers-test
+                      aws.lambda.adapters.api-gateway.handlers-test]
+             :eftest {:multithread? false}}]
 
    :prerelease
    {:release-tasks

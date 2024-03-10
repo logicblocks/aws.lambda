@@ -1,10 +1,10 @@
 (ns aws.lambda.adapters.api-gateway.events-test
   (:require
-    [clojure.test :refer [deftest is]]
+   [clojure.test :refer [deftest is]]
 
-    [aws.lambda.adapters.api-gateway.events :as events]
-    [aws.lambda.adapters.test-support.data :as data]
-    [aws.lambda.adapters.test-support.predicates :as predicates]))
+   [aws.lambda.adapters.api-gateway.events :as events]
+   [aws.lambda.adapters.test-support.data :as data]
+   [aws.lambda.adapters.test-support.predicates :as predicates]))
 
 ;; normalise v1 api gateway events
 (deftest

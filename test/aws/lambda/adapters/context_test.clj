@@ -1,10 +1,10 @@
 (ns aws.lambda.adapters.context-test
   (:require
-    [clojure.test :refer [deftest is]]
+   [clojure.test :refer [deftest is]]
 
-    [aws.lambda.adapters.context :as context]
-    [aws.lambda.adapters.test-support.data :as data]
-    [aws.lambda.adapters.test-support.clock :as clock]))
+   [aws.lambda.adapters.context :as context]
+   [aws.lambda.adapters.test-support.data :as data]
+   [aws.lambda.adapters.test-support.clock :as clock]))
 
 (deftest normalise-context-extracts-top-level-fields-into-map
   (let [aws-request-id (data/random-aws-request-id)

@@ -1,10 +1,10 @@
 (ns aws.lambda.adapters.api-gateway.responses
   (:require
-    [clojure.set :as set]
+   [clojure.set :as set]
 
-    [camel-snake-kebab.core :as csk-core]
+   [camel-snake-kebab.core :as csk-core]
 
-    [aws.lambda.adapters.utils :as utils]))
+   [aws.lambda.adapters.utils :as utils]))
 
 (defn normalise-response [response]
   (utils/transform-keys-shallow

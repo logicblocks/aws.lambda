@@ -1,20 +1,20 @@
 (ns aws.lambda.adapters.api-gateway.transformers
   (:require
-    [clojure.java.io :as io]
-    [clojure.string :as string]
+   [clojure.java.io :as io]
+   [clojure.string :as string]
 
-    [camel-snake-kebab.core :as csk-core]
+   [camel-snake-kebab.core :as csk-core]
 
-    [ring.util.io :as ring-io]
-    [ring.util.codec :as ring-codec]
+   [ring.util.io :as ring-io]
+   [ring.util.codec :as ring-codec]
 
-    [aws.lambda.adapters.utils :as utils]
-    [aws.lambda.adapters.api-gateway.events :as events]
-    [aws.lambda.adapters.api-gateway.protocols :as protocols])
+   [aws.lambda.adapters.utils :as utils]
+   [aws.lambda.adapters.api-gateway.events :as events]
+   [aws.lambda.adapters.api-gateway.protocols :as protocols])
   (:import
-    [clojure.lang ISeq]
-    [java.io File InputStream]
-    [java.nio.file Files]))
+   [clojure.lang ISeq]
+   [java.io File InputStream]
+   [java.nio.file Files]))
 
 (extend-protocol protocols/RequestBodyTransformer
   String
@@ -51,7 +51,7 @@
 
   ISeq
   (->api-gateway-response-body [^ISeq body]
-    {:body            (string/join (into [] body))
+    {:body            (string/join (vec body))
      :base64-encoded? false})
 
   nil

@@ -1,16 +1,16 @@
 (ns aws.lambda.adapters.api-gateway.transformers-test
   (:require
-    [clojure.java.io :as io]
-    [clojure.test :refer [deftest is]]
+   [clojure.java.io :as io]
+   [clojure.test :refer [deftest is]]
 
-    [ring.util.codec :as ring-codec]
-    [ring.util.response :as ring-response]
+   [ring.util.codec :as ring-codec]
+   [ring.util.response :as ring-response]
 
-    [aws.lambda.adapters.api-gateway.transformers :as transformers]
-    [aws.lambda.adapters.api-gateway.protocols :as protocols]
-    [aws.lambda.adapters.test-support.data :as data])
+   [aws.lambda.adapters.api-gateway.transformers :as transformers]
+   [aws.lambda.adapters.api-gateway.protocols :as protocols]
+   [aws.lambda.adapters.test-support.data :as data])
   (:import
-    [java.io File]))
+   [java.io File]))
 
 ;; ->ring-request-body
 (deftest ->ring-request-body-converts-plain-string-to-input-stream

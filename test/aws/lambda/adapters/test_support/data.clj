@@ -1,14 +1,14 @@
 (ns aws.lambda.adapters.test-support.data
   (:require
-    [clojure.string :as string]
+   [clojure.string :as string]
 
-    [ring.util.codec :as codec]
+   [ring.util.codec :as codec]
 
-    [faker.lorem :as fl])
+   [faker.lorem :as fl])
   (:import
-    [com.amazonaws.services.lambda.runtime Context]
-    [java.time Instant ZoneId]
-    [java.time.format DateTimeFormatter]))
+   [com.amazonaws.services.lambda.runtime Context]
+   [java.time Instant ZoneId]
+   [java.time.format DateTimeFormatter]))
 
 (defn- ->single-valued [val] (if (vector? val) (string/join "," val) val))
 (defn- ->multi-valued [val] (if (vector? val) val [val]))
@@ -161,7 +161,7 @@
            (rand-nth bodies)
            (rand-nth (conj bodies nil)))]
      (if base64-encoded?
-       (codec/base64-encode (.getBytes body))
+       (codec/base64-encode (.getBytes ^String body))
        body))))
 
 (defn random-request-id []
@@ -177,7 +177,7 @@
   ([] (random-request-time-epoch {}))
   ([{:keys [instant]}]
    (let [instant (or instant (Instant/now))]
-     (.toEpochMilli instant))))
+     (.toEpochMilli ^Instant instant))))
 
 (defn random-extended-request-id []
   (str "J" (string/join (take 14 random-alphabetic-seq)) "="))

@@ -1,8 +1,8 @@
 (ns aws.lambda.adapters.api-gateway.responses-test
   (:require
-    [clojure.test :refer [deftest is]]
+   [clojure.test :refer [deftest is]]
 
-    [aws.lambda.adapters.api-gateway.responses :as responses]))
+   [aws.lambda.adapters.api-gateway.responses :as responses]))
 
 (deftest
   normalise-response-converts-response-keys-to-correct-camel-case-strings-v1

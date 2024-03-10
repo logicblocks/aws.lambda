@@ -1,15 +1,15 @@
 (ns aws.lambda.adapters.api-gateway.handlers
   (:require
-    [clojure.java.io :as io]
+   [clojure.java.io :as io]
 
-    [cartus.core :as log]
-    [cartus.null :as cn]
+   [cartus.core :as log]
+   [cartus.null :as cn]
 
-    [aws.lambda.adapters.utils :as utils]
-    [aws.lambda.adapters.handlers :refer [def-lambda-handler]]
-    [aws.lambda.adapters.api-gateway.transformers :as transformers]
-    [aws.lambda.adapters.api-gateway.responses :as responses]
-    [aws.lambda.adapters.api-gateway.events :as events]))
+   [aws.lambda.adapters.utils :as utils]
+   [aws.lambda.adapters.handlers :refer [def-lambda-handler]]
+   [aws.lambda.adapters.api-gateway.transformers :as transformers]
+   [aws.lambda.adapters.api-gateway.responses :as responses]
+   [aws.lambda.adapters.api-gateway.events :as events]))
 
 (defmacro def-api-gateway-handler
   [{:keys [name

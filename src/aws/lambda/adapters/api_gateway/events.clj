@@ -1,13 +1,13 @@
 (ns aws.lambda.adapters.api-gateway.events
   (:require
-    [clojure.string :as string]
+   [clojure.string :as string]
 
-    [camel-snake-kebab.core :as csk-core]
+   [camel-snake-kebab.core :as csk-core]
 
-    [ring.util.codec :as codec]
+   [ring.util.codec :as codec]
 
-    [aws.lambda.adapters.utils :as utils]
-    [aws.lambda.adapters.api-gateway.protocols :as protocols]))
+   [aws.lambda.adapters.utils :as utils]
+   [aws.lambda.adapters.api-gateway.protocols :as protocols]))
 
 (defn server-name [event]
   (or

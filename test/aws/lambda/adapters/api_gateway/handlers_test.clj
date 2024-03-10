@@ -1,25 +1,25 @@
 (ns aws.lambda.adapters.api-gateway.handlers-test
   (:require
-    [clojure.java.io :as io]
-    [clojure.test :refer [deftest is]]
+   [clojure.java.io :as io]
+   [clojure.test :refer [deftest is]]
 
-    [cartus.test :as ct]
+   [cartus.test :as ct]
 
-    [aws.lambda.adapters.utils :as utils]
-    [aws.lambda.adapters.context :as context]
-    [aws.lambda.adapters.handlers :as handlers]
-    [aws.lambda.adapters.api-gateway.events :as events]
-    [aws.lambda.adapters.api-gateway.transformers :as transformers]
-    [aws.lambda.adapters.api-gateway.handlers
-     :refer [def-api-gateway-handler
-             def-api-gateway-ring-handler]]
-    [aws.lambda.adapters.test-support.data :as data]
-    [aws.lambda.adapters.test-support.clock :as clock])
+   [aws.lambda.adapters.utils :as utils]
+   [aws.lambda.adapters.context :as context]
+   [aws.lambda.adapters.handlers :as handlers]
+   [aws.lambda.adapters.api-gateway.events :as events]
+   [aws.lambda.adapters.api-gateway.transformers :as transformers]
+   [aws.lambda.adapters.api-gateway.handlers
+    :refer [def-api-gateway-handler
+            def-api-gateway-ring-handler]]
+   [aws.lambda.adapters.test-support.data :as data]
+   [aws.lambda.adapters.test-support.clock :as clock])
   (:import
-    [java.io ByteArrayOutputStream]))
+   [java.io ByteArrayOutputStream]))
 
 (defn request-input-stream [event]
-  (io/input-stream (.getBytes (utils/->json event))))
+  (io/input-stream (.getBytes ^String (utils/->json event))))
 
 (defn response-output-stream []
   (ByteArrayOutputStream.))

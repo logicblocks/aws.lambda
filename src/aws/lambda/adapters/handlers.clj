@@ -1,16 +1,17 @@
 (ns aws.lambda.adapters.handlers
   (:require
-    [cartus.core :as log]
-    [cartus.null :as cn]
+   [cartus.core :as log]
+   [cartus.null :as cn]
 
-    [aws.lambda.adapters.clock :as clock]
-    [aws.lambda.adapters.utils :as utils]
-    [aws.lambda.adapters.context :as context])
+   [tick.core :as tc]
+
+   [aws.lambda.adapters.utils :as utils]
+   [aws.lambda.adapters.context :as context])
   (:import
-    [java.io InputStream
-             OutputStream]
-    [com.amazonaws.services.lambda.runtime Context
-                                           RequestStreamHandler]))
+   [java.io InputStream
+    OutputStream]
+   [com.amazonaws.services.lambda.runtime Context
+    RequestStreamHandler]))
 
 (defn handle-request
   [^RequestStreamHandler handler
@@ -26,7 +27,6 @@
            clock]}]
   (let [initialiser (or initialiser (fn [] nil))
         request-handler (or request-handler (fn [_ _ _ _]))
-        clock (or clock (clock/system-clock))
         prefix (gensym)
         init-method (symbol (str prefix "init"))
         handle-request-method (symbol (str prefix "handleRequest"))
@@ -49,7 +49,7 @@
           ^OutputStream out#
           ^Context context#]
          (let [state# (.state ^{:tag ~(symbol name)} this#)
-               clock# (or (:clock state#) ~clock)
+               clock# (or (:clock state#) ~clock (tc/clock))
                logger# (or (:logger state#) (cn/logger))
                log-event-type#
                (utils/make-log-event-type-fn ~namespace :request-handler)

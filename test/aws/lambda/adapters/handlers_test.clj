@@ -1,20 +1,20 @@
 (ns aws.lambda.adapters.handlers-test
   (:require
-    [clojure.java.io :as io]
-    [clojure.test :refer [deftest is]]
+   [clojure.java.io :as io]
+   [clojure.test :refer [deftest is]]
 
-    [cartus.test :as ct]
+   [cartus.test :as ct]
 
-    [aws.lambda.adapters.utils :as utils]
-    [aws.lambda.adapters.context :as context]
-    [aws.lambda.adapters.handlers :as handlers :refer [def-lambda-handler]]
-    [aws.lambda.adapters.test-support.data :as data]
-    [aws.lambda.adapters.test-support.clock :as clock])
+   [aws.lambda.adapters.utils :as utils]
+   [aws.lambda.adapters.context :as context]
+   [aws.lambda.adapters.handlers :as handlers :refer [def-lambda-handler]]
+   [aws.lambda.adapters.test-support.data :as data]
+   [aws.lambda.adapters.test-support.clock :as clock])
   (:import
-    [java.io ByteArrayOutputStream]))
+   [java.io ByteArrayOutputStream]))
 
 (defn request-input-stream [event]
-  (io/input-stream (.getBytes (utils/->json event))))
+  (io/input-stream (.getBytes ^String (utils/->json event))))
 
 (defn response-output-stream []
   (ByteArrayOutputStream.))
@@ -199,6 +199,5 @@
             #(= (:type %) ::request-handler.handling)
             (ct/events logger)))]
     (is (= :debug (:level log-event)))
-    (is (= {:lambda {:state   state
-                     :context normalised-context}}
+    (is (= {:lambda {:context normalised-context}}
           (:context log-event)))))

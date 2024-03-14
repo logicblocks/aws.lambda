@@ -48,7 +48,7 @@
           ^InputStream in#
           ^OutputStream out#
           ^Context context#]
-         (let [state# (.state ^{:tag ~(symbol name)} this#)
+         (let [state# (.state this#)
                clock# (or (:clock state#) ~clock (tc/clock))
                logger# (or (:logger state#) (cn/logger))
                log-event-type#

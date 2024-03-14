@@ -104,7 +104,8 @@
                      defrecord [[:block 1] [:inner 1]]
                      deftype   [[:block 1] [:inner 1]]}}
 
-  :eastwood {:config-files ["config/linter.clj"]}
+  :eastwood {:config-files ["config/linter.clj"]
+             :exclude-linters [:reflection]}
 
   :deploy-repositories
   {"releases"  {:url "https://repo.clojars.org" :creds :gpg}

@@ -65,10 +65,12 @@
 (defmacro def-api-gateway-ring-handler
   [{:keys [name
            initialiser
+           defaults
            ring-handler
            exception-handler
            clock]}]
-  (let [namespace (str (ns-name *ns*))]
+  (let [namespace (str (ns-name *ns*))
+        request-transformer-options {:defaults (:request defaults)}]
     `(def-api-gateway-handler
        {:name              ~name
         :clock             ~clock
@@ -81,7 +83,7 @@
                 (utils/make-log-event-type-fn ~namespace :request-handler)
                 ring-handler# (or (:ring-handler state#) ~ring-handler)
                 request# (transformers/api-gateway-request->ring-request
-                           event# context#)
+                           event# context# ~request-transformer-options)
 
                 _# (log/debug logger#
                      (log-event-type# :handling-ring-request)

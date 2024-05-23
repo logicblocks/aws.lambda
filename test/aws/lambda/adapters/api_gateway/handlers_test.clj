@@ -239,7 +239,7 @@
     (is (= exception
           (:exception log-event)))))
 
-(def request-spy (atom nil))
+(def ring-request-spy (atom nil))
 
 (def-api-gateway-ring-handler
   {:name "test.handler.api-gateway.RingRequestTest"
@@ -247,7 +247,7 @@
    (fn [] {:clock (clock/fixed-clock (System/currentTimeMillis))})
    :ring-handler
    (fn [request]
-     (reset! request-spy request)
+     (reset! ring-request-spy request)
      {:status 200
       :body   "Hi!"})})
 
@@ -272,11 +272,41 @@
       raw-context)
     (let [expected-body (when (:body ring-request)
                           (slurp (:body ring-request)))
-          actual-body (when (:body @request-spy)
-                        (slurp (:body @request-spy)))]
+          actual-body (when (:body @ring-request-spy)
+                        (slurp (:body @ring-request-spy)))]
       (is (= (dissoc ring-request :body)
-            (dissoc @request-spy :body)))
+            (dissoc @ring-request-spy :body)))
       (is (= expected-body actual-body)))))
+
+(def defaults-request-spy (atom nil))
+
+(def-api-gateway-ring-handler
+  {:name "test.handler.api-gateway.RequestDefaultsTest"
+   :defaults
+   {:request
+    {:scheme      "https"
+     :server-port 443}}
+   :initialiser
+   (fn [] {:clock (clock/fixed-clock (System/currentTimeMillis))})
+   :ring-handler
+   (fn [request]
+     (reset! defaults-request-spy request)
+     {:status 200
+      :body   "Hi!"})})
+
+(deftest api-gateway-ring-handler-defaults-ring-request-attributes-on-handle
+  (import 'test.handler.api-gateway.RequestDefaultsTest)
+  (let [lambda-handler (test.handler.api-gateway.RequestDefaultsTest.)
+
+        raw-context (data/raw-lambda-context)
+        raw-event (data/raw-api-gateway-v2-event)]
+    (handlers/handle-request lambda-handler
+      (request-input-stream raw-event)
+      (response-output-stream)
+      raw-context)
+    (let [ring-request @defaults-request-spy]
+      (is (= (:scheme ring-request) "https"))
+      (is (= (:server-port ring-request) 443)))))
 
 (def-api-gateway-ring-handler
   {:name "test.handler.api-gateway.RingResponseTest"

@@ -171,6 +171,16 @@
         request (transformers/api-gateway-request->ring-request event context)]
     (is (nil? (:server-port request)))))
 
+(deftest ring-request-has-default-server-port-when-no-header-and-provided-v1
+  (let [default-server-port 443
+        event (data/normalised-api-gateway-v1-event)
+        context (data/normalised-lambda-context)
+        options {:defaults {:server-port default-server-port}}
+
+        request (transformers/api-gateway-request->ring-request
+                  event context options)]
+    (is (= default-server-port (:server-port request)))))
+
 (deftest ring-request-gets-remote-address-from-identity-source-ip-v1
   (let [request-context-identity-source-ip "1.2.3.4"
 
@@ -247,6 +257,16 @@
 
         request (transformers/api-gateway-request->ring-request event context)]
     (is (nil? (:scheme request)))))
+
+(deftest ring-request-has-default-scheme-when-no-header-and-provided-v1
+  (let [default-scheme "https"
+        event (data/normalised-api-gateway-v1-event)
+        context (data/normalised-lambda-context)
+        options {:defaults {:scheme default-scheme}}
+
+        request (transformers/api-gateway-request->ring-request
+                  event context options)]
+    (is (= default-scheme (:scheme request)))))
 
 (deftest ring-request-gets-request-method-from-http-method-v1
   (let [http-method "PUT"
@@ -381,22 +401,32 @@
         request (transformers/api-gateway-request->ring-request event context)]
     (is (nil? (:server-name request)))))
 
-(deftest ring-request-gets-server-port-from-x-forwarded-port-header
+(deftest ring-request-gets-server-port-from-x-forwarded-port-header-v2
   (let [x-forwarded-port 8080
 
-        event (data/normalised-api-gateway-v1-event
+        event (data/normalised-api-gateway-v2-event
                 {:headers {"x-forwarded-port" (str x-forwarded-port)}})
         context (data/normalised-lambda-context)
 
         request (transformers/api-gateway-request->ring-request event context)]
     (is (= x-forwarded-port (:server-port request)))))
 
-(deftest ring-request-has-nil-server-port-when-no-x-forwarded-port-header
-  (let [event (data/normalised-api-gateway-v1-event)
+(deftest ring-request-has-nil-server-port-when-no-x-forwarded-port-header-v2
+  (let [event (data/normalised-api-gateway-v2-event)
         context (data/normalised-lambda-context)
 
         request (transformers/api-gateway-request->ring-request event context)]
     (is (nil? (:server-port request)))))
+
+(deftest ring-request-has-default-server-port-when-no-header-and-provided-v2
+  (let [default-server-port 443
+        event (data/normalised-api-gateway-v2-event)
+        context (data/normalised-lambda-context)
+        options {:defaults {:server-port default-server-port}}
+
+        request (transformers/api-gateway-request->ring-request
+                  event context options)]
+    (is (= default-server-port (:server-port request)))))
 
 (deftest ring-request-gets-remote-address-from-http-source-ip-v2
   (let [request-context-http-source-ip "1.2.3.4"
@@ -477,6 +507,16 @@
 
         request (transformers/api-gateway-request->ring-request event context)]
     (is (nil? (:scheme request)))))
+
+(deftest ring-request-has-default-scheme-when-no-header-and-provided-v2
+  (let [default-scheme "https"
+        event (data/normalised-api-gateway-v2-event)
+        context (data/normalised-lambda-context)
+        options {:defaults {:scheme default-scheme}}
+
+        request (transformers/api-gateway-request->ring-request
+                  event context options)]
+    (is (= default-scheme (:scheme request)))))
 
 (deftest ring-request-gets-request-method-from-http-method-v2
   (let [http-method "PUT"

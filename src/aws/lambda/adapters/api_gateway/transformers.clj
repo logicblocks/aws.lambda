@@ -60,19 +60,23 @@
      :base64-encoded? false}))
 
 (defn api-gateway-request->ring-request
-  [event context]
-  {:server-name    (events/server-name event)
-   :server-port    (events/server-port event)
-   :remote-addr    (events/remote-addr event)
-   :uri            (events/uri event)
-   :query-string   (events/query-string event)
-   :scheme         (events/scheme event)
-   :request-method (events/request-method event)
-   :headers        (events/headers event)
-   :protocol       (events/protocol event)
-   :body           (events/body event)
-   :lambda         {:event   event
-                    :context context}})
+  ([event context]
+   (api-gateway-request->ring-request event context {}))
+  ([event context options]
+   (let [default-scheme (get-in options [:defaults :scheme])
+         default-server-port (get-in options [:defaults :server-port])]
+     {:server-name    (events/server-name event)
+      :server-port    (or (events/server-port event) default-server-port)
+      :remote-addr    (events/remote-addr event)
+      :uri            (events/uri event)
+      :query-string   (events/query-string event)
+      :scheme         (or (events/scheme event) default-scheme)
+      :request-method (events/request-method event)
+      :headers        (events/headers event)
+      :protocol       (events/protocol event)
+      :body           (events/body event)
+      :lambda         {:event   event
+                       :context context}})))
 
 (defn ring-response->api-gateway-response
   ([ring-response]

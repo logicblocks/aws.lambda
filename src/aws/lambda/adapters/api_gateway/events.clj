@@ -26,10 +26,17 @@
     (utils/drill-> event :request-context :http :source-ip)
     (utils/drill-> event :request-context :identity :source-ip)))
 
-(defn uri [event]
-  (or
-    (utils/drill-> event :request-context :http :path)
-    (utils/drill-> event :path)))
+(defn uri
+  ([event]
+   (uri event {}))
+  ([event options]
+   (if (:use-raw-path? options)
+     (or
+       (utils/drill-> event :raw-path)
+       (utils/drill-> event :request-context :path))
+     (or
+       (utils/drill-> event :request-context :http :path)
+       (utils/drill-> event :path)))))
 
 (defn query-string [event]
   (or

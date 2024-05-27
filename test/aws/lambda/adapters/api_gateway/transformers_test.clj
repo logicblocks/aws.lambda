@@ -217,6 +217,21 @@
         request (transformers/api-gateway-request->ring-request event context)]
     (is (= path (:uri request)))))
 
+(deftest ring-request-gets-uri-from-request-context-path-when-raw-v1
+  (let [path "/path/to/file"
+        raw-path "/stage/path/to/file"
+
+        event (data/normalised-api-gateway-v1-event
+                {:path path
+                 :request-context
+                 (data/normalised-api-gateway-v1-request-context
+                   {:path raw-path})})
+        context (data/normalised-lambda-context)
+
+        request (transformers/api-gateway-request->ring-request event context
+                  {:options {:use-raw-path? true}})]
+    (is (= raw-path (:uri request)))))
+
 (deftest ring-request-gets-query-string-from-query-string-parameters-v1
   (let [query-string-parameters {"foo" "bar"
                                  "baz" "qux"}
@@ -456,6 +471,7 @@
 
 (deftest ring-request-gets-uri-from-http-path-v2
   (let [path "/path/to/file"
+        raw-path "/stage/path/to/file"
 
         event (data/normalised-api-gateway-v2-event
                 {:request-context
@@ -467,6 +483,23 @@
 
         request (transformers/api-gateway-request->ring-request event context)]
     (is (= path (:uri request)))))
+
+(deftest ring-request-gets-uri-from-raw-path-when-raw-v2
+  (let [path "/path/to/file"
+        raw-path "/stage/path/to/file"
+
+        event (data/normalised-api-gateway-v2-event
+                {:raw-path raw-path
+                 :request-context
+                 (data/normalised-api-gateway-v2-request-context
+                   {:http
+                    (data/normalised-api-gateway-v2-http-context
+                      {:path path})})})
+        context (data/normalised-lambda-context)
+
+        request (transformers/api-gateway-request->ring-request event context
+                  {:options {:use-raw-path? true}})]
+    (is (= raw-path (:uri request)))))
 
 (deftest ring-request-gets-query-string-from-raw-query-string-v2
   (let [raw-query-string "foo=bar&baz=qux"

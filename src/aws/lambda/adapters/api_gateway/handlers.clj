@@ -66,11 +66,14 @@
   [{:keys [name
            initialiser
            defaults
+           options
            ring-handler
            exception-handler
            clock]}]
   (let [namespace (str (ns-name *ns*))
-        request-transformer-options {:defaults (:request defaults)}]
+        request-transformer-options
+        {:defaults (:request defaults)
+         :options  (:request options)}]
     `(def-api-gateway-handler
        {:name              ~name
         :clock             ~clock

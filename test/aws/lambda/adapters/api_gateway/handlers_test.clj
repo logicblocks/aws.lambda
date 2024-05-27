@@ -305,8 +305,40 @@
       (response-output-stream)
       raw-context)
     (let [ring-request @defaults-request-spy]
-      (is (= (:scheme ring-request) "https"))
-      (is (= (:server-port ring-request) 443)))))
+      (is (= "https" (:scheme ring-request)))
+      (is (= 443 (:server-port ring-request))))))
+
+(def options-request-spy (atom nil))
+
+(def-api-gateway-ring-handler
+  {:name "test.handler.api-gateway.RequestOptionsTest"
+   :options
+   {:request
+    {:use-raw-path? true}}
+   :initialiser
+   (fn [] {:clock (clock/fixed-clock (System/currentTimeMillis))})
+   :ring-handler
+   (fn [request]
+     (reset! options-request-spy request)
+     {:status 200
+      :body   "Hi!"})})
+
+(deftest api-gateway-ring-handler-uses-raw-path-when-requested
+  (import 'test.handler.api-gateway.RequestOptionsTest)
+  (let [lambda-handler (test.handler.api-gateway.RequestOptionsTest.)
+
+        raw-context (data/raw-lambda-context)
+        raw-event (data/raw-api-gateway-v2-event
+                    {:raw-path "/some-stage/some-path"
+                     :request-context
+                     (data/raw-api-gateway-v2-request-context
+                       {:path "/some-path"})})]
+    (handlers/handle-request lambda-handler
+      (request-input-stream raw-event)
+      (response-output-stream)
+      raw-context)
+    (let [ring-request @options-request-spy]
+      (is (= "/some-stage/some-path" (:uri ring-request))))))
 
 (def-api-gateway-ring-handler
   {:name "test.handler.api-gateway.RingResponseTest"

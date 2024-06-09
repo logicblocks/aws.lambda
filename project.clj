@@ -19,11 +19,11 @@
    [jonase/eastwood "1.4.0"]]
 
   :dependencies
-  [[io.logicblocks/cartus.core "0.1.18"]
-   [io.logicblocks/cartus.null "0.1.18"]
+  [[io.logicblocks/cartus.core "0.1.19-RC7"]
+   [io.logicblocks/cartus.null "0.1.19-RC7"]
    [io.logicblocks/jason "1.0.0"]
 
-   [ring/ring-core "1.11.0"]
+   [ring/ring-core "1.12.1"]
    [ring/ring-codec "1.2.0"]
 
    [camel-snake-kebab "0.4.3"]
@@ -31,21 +31,21 @@
    [tick "0.7.5"]
 
    [com.amazonaws/aws-lambda-java-core "1.2.3"]
-   [com.amazonaws/aws-lambda-java-runtime-interface-client "2.4.1"]]
+   [com.amazonaws/aws-lambda-java-runtime-interface-client "2.5.0"]]
 
   :profiles
   {:shared
    ^{:pom-scope :test}
    {:dependencies
-    [[org.clojure/clojure "1.11.1"]
+    [[org.clojure/clojure "1.11.3"]
 
-     [nrepl "1.1.0"]
+     [nrepl "1.1.2"]
 
-     [org.clojure/tools.namespace "1.4.5"]
-     [org.clojure/tools.trace "0.7.11"]
+     [org.clojure/tools.namespace "1.5.0"]
+     [org.clojure/tools.trace "0.8.0"]
      [org.clojure/test.check "1.1.1"]
 
-     [io.logicblocks/cartus.test "0.1.18"]
+     [io.logicblocks/cartus.test "0.1.19-RC7"]
 
      [faker "0.3.2"]
 

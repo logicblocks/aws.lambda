@@ -71,6 +71,9 @@ commands:
       - run: ./scripts/ci/common/install-gpg-key.sh
   configure_release_tools:
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:7ddDCCjUNpi9Mx2EoPHUOGGOKpnzfrsTLbVpO3dgqjk"
       - run: ./scripts/ci/common/configure-git.sh
       - run: ./scripts/ci/common/configure-clojars.sh
 

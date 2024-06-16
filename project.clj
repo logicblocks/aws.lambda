@@ -1,4 +1,4 @@
-(defproject io.logicblocks/aws.lambda "0.0.1-RC7"
+(defproject io.logicblocks/aws.lambda "0.0.1-RC8"
   :description "A library for building Clojure programs using AWS Lambda."
   :url "https://github.com/logicblocks/aws.lambda"
 

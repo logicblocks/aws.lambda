@@ -125,30 +125,42 @@
         request (transformers/api-gateway-request->ring-request event context)]
     (is (= via-host (:server-name request)))))
 
-(deftest
-  ring-request-gets-server-name-from-identity-source-ip-when-no-via-header-v1
-  (let [request-context-identity-source-ip "1.2.3.4"
+(deftest ring-request-server-name-strips-port-from-via-header-v1
+  (let [via-host "service.example.com"
+        via-address (str via-host ":8080")
 
         event (data/normalised-api-gateway-v1-event
-                {:request-context
-                 (data/normalised-api-gateway-v1-request-context
-                   {:identity
-                    (data/normalised-api-gateway-v1-request-identity
-                      {:source-ip
-                       request-context-identity-source-ip})})})
+                {:headers {"via" (data/via-header-value
+                                   {:host via-address})}})
         context (data/normalised-lambda-context)
 
         request (transformers/api-gateway-request->ring-request event context)]
-    (is (= request-context-identity-source-ip (:server-name request)))))
+    (is (= via-host (:server-name request)))))
 
-(deftest
-  ring-request-has-nil-server-name-when-no-via-header-or-identity-source-ip-v1
+(deftest ring-request-gets-server-name-from-host-header-when-no-via-header-v1
+  (let [host "service.example.com"
+
+        event (data/normalised-api-gateway-v1-event
+                {:headers {"host" host}})
+        context (data/normalised-lambda-context)
+
+        request (transformers/api-gateway-request->ring-request event context)]
+    (is (= host (:server-name request)))))
+
+(deftest ring-request-server-name-strips-port-from-host-header-v1
+  (let [host "service.example.com"
+        address (str host ":8080")
+
+        event (data/normalised-api-gateway-v1-event
+                {:headers {"host" address}})
+        context (data/normalised-lambda-context)
+
+        request (transformers/api-gateway-request->ring-request event context)]
+    (is (= host (:server-name request)))))
+
+(deftest ring-request-has-nil-server-name-when-no-headers-v1
   (let [event (data/normalised-api-gateway-v1-event
-                {:request-context
-                 (data/normalised-api-gateway-v1-request-context
-                   {:identity
-                    (data/normalised-api-gateway-v1-request-identity
-                      {:source-ip nil})})})
+                {:headers {"host" nil}})
         context (data/normalised-lambda-context)
 
         request (transformers/api-gateway-request->ring-request event context)]
@@ -387,30 +399,42 @@
         request (transformers/api-gateway-request->ring-request event context)]
     (is (= via-host (:server-name request)))))
 
-(deftest
-  ring-request-gets-server-name-from-http-source-ip-when-no-via-header-v2
-  (let [request-context-http-source-ip "1.2.3.4"
+(deftest ring-request-server-name-strips-port-from-via-header-v2
+  (let [via-host "service.example.com"
+        via-address (str via-host ":8080")
 
         event (data/normalised-api-gateway-v2-event
-                {:request-context
-                 (data/normalised-api-gateway-v2-request-context
-                   {:http
-                    (data/normalised-api-gateway-v2-http-context
-                      {:source-ip
-                       request-context-http-source-ip})})})
+                {:headers {"via" (data/via-header-value
+                                   {:host via-address})}})
         context (data/normalised-lambda-context)
 
         request (transformers/api-gateway-request->ring-request event context)]
-    (is (= request-context-http-source-ip (:server-name request)))))
+    (is (= via-host (:server-name request)))))
 
-(deftest
-  ring-request-has-nil-server-name-when-no-via-header-or-http-source-ip-v2
+(deftest ring-request-gets-server-name-from-host-header-when-no-via-header-v2
+  (let [host "service.example.com"
+
+        event (data/normalised-api-gateway-v2-event
+                {:headers {"host" host}})
+        context (data/normalised-lambda-context)
+
+        request (transformers/api-gateway-request->ring-request event context)]
+    (is (= host (:server-name request)))))
+
+(deftest ring-request-server-name-strips-port-from-host-header-v2
+  (let [host "service.example.com"
+        address (str host ":8080")
+
+        event (data/normalised-api-gateway-v2-event
+                {:headers {"host" address}})
+        context (data/normalised-lambda-context)
+
+        request (transformers/api-gateway-request->ring-request event context)]
+    (is (= host (:server-name request)))))
+
+(deftest ring-request-has-nil-server-name-when-no-headers-v2
   (let [event (data/normalised-api-gateway-v2-event
-                {:request-context
-                 (data/normalised-api-gateway-v2-request-context
-                   {:http
-                    (data/normalised-api-gateway-v2-http-context
-                      {:source-ip nil})})})
+                {:headers {"host" nil}})
         context (data/normalised-lambda-context)
 
         request (transformers/api-gateway-request->ring-request event context)]

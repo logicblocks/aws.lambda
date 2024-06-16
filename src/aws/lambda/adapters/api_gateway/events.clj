@@ -12,9 +12,9 @@
 (defn server-name [event]
   (or
     (utils/drill-> event :headers #(get % "via")
-      (fn [val] (second (string/split val #" "))))
-    (utils/drill-> event :request-context :http :source-ip)
-    (utils/drill-> event :request-context :identity :source-ip)))
+      (fn [val] (first (string/split (second (string/split val #" ")) #":"))))
+    (utils/drill-> event :headers #(get % "host")
+      (fn [val] (first (string/split val #":"))))))
 
 (defn server-port [event]
   (utils/drill-> event :headers
